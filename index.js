@@ -64,14 +64,14 @@ function trackingPage() {
 }
 function scrollingPathNavigate(section, index) {
   if (
-    section.getBoundingClientRect().top - 300 < 0 &&
+    section.getBoundingClientRect().top - 300 <= 1 &&
     section.getBoundingClientRect().top +
       section.getBoundingClientRect().height -
       300 >
-      0
+      1
   ) {
-    page = index;
     replacePath();
+    page = index;
   }
 }
 
@@ -259,7 +259,7 @@ function prevPage() {
     replacePath();
   }
 }
-let prevAnchorLink = null;
+let prevAnchorLink = "firstPage";
 function replacePath() {
   let newAnchorLink;
   if (page === 0) {
@@ -287,9 +287,11 @@ function replacePath() {
       window.location.href.replace(/\/$/, "").replace(/#[a-zA-Z]+/, "") +
       "#fifthPage";
   }
-  if (prevAnchorLink !== newAnchorLink) {
+  if (!newAnchorLink) newAnchorLink = "#firstPage";
+
+  if (newAnchorLink !== prevAnchorLink) {
     prevAnchorLink = newAnchorLink;
-    window.location.href = newAnchorLink;
+    window.location.replace(newAnchorLink);
   }
 }
 

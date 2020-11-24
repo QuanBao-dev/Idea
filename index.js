@@ -30,6 +30,8 @@ function handleChangeStateScroll() {
     if ($(".header")) $(".header").className = "header-mobile";
     onClickNavBar();
   } else {
+    const temp = window.location.href.match(/#[a-zA-Z]+/);
+    if (!temp) window.location.replace("#firstPage");
     isScrollVisible = false;
     window.document.body.style.overflowY = "hidden";
     $("#fullpage").style.position = "fixed";

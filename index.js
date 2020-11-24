@@ -122,6 +122,7 @@ function anchorPageNavigate(isAnimation = true) {
   const temp = window.location.href.match(/#[a-zA-Z]+/);
   let anchorPage;
   if (temp) anchorPage = temp[0];
+  else anchorPage = "#firstPage";
   if (anchorPage === "#firstPage") {
     slidingPageOnPath(0, isAnimation);
   }

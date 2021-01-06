@@ -90,13 +90,13 @@ function onClickNavBar() {
   const listNavBarItems = [...$$(".nav-bar__container__item")];
   listNavBarItems.forEach((link, index) => {
     link.addEventListener("click", () => {
-      slidingPageOnPath(index);
+      slidingToPage(index);
       navigationOff();
     });
   });
   listAnchorLink.forEach((link, index) => {
     link.addEventListener("click", () => {
-      slidingPageOnPath(index);
+      slidingToPage(index);
       navigationOff();
     });
     link.addEventListener("mouseenter", () => {
@@ -114,7 +114,7 @@ function onClickNavBar() {
   });
   listAnchorLinkImage.forEach((link, index) => {
     link.addEventListener("click", () => {
-      slidingPageOnPath(index);
+      slidingToPage(index);
       navigationOff();
     });
   });
@@ -126,19 +126,19 @@ function anchorPageNavigate(isAnimation = true) {
   if (temp) anchorPage = temp[0];
   else anchorPage = "#firstPage";
   if (anchorPage === "#firstPage") {
-    slidingPageOnPath(0, isAnimation);
+    slidingToPage(0, isAnimation);
   }
   if (anchorPage === "#secondPage") {
-    slidingPageOnPath(1, isAnimation);
+    slidingToPage(1, isAnimation);
   }
   if (anchorPage === "#thirdPage") {
-    slidingPageOnPath(2, isAnimation);
+    slidingToPage(2, isAnimation);
   }
   if (anchorPage === "#fourthPage") {
-    slidingPageOnPath(3, isAnimation);
+    slidingToPage(3, isAnimation);
   }
   if (anchorPage === "#fifthPage") {
-    slidingPageOnPath(4, isAnimation);
+    slidingToPage(4, isAnimation);
   }
 }
 
@@ -173,7 +173,7 @@ function updateCurrentPageHeight() {
   }
 }
 
-function slidingPageOnPath(pageNavigate, isAnimation = true) {
+function slidingToPage(pageNavigate, isAnimation = true) {
   let sections = [...$$("#section")];
   sections[page].removeEventListener("wheel", handleWheel);
   page = pageNavigate;
@@ -224,43 +224,6 @@ function slidingPageOnPath(pageNavigate, isAnimation = true) {
   }
 }
 
-function prevPage() {
-  let sections = [...$$("#section")];
-  if (page - 1 >= 0) {
-    sections[page].removeEventListener("wheel", handleWheel);
-    page--;
-    $("#fullpage").style.transition = "0.5s";
-    $("#fullpage").style.transform = `translateY(-${
-      window.innerHeight * page
-    }px)`;
-    sections[page].addEventListener("wheel", handleWheel);
-    if (page === 1) {
-      $(".header").style.color = "black";
-      $(".header .one").style.backgroundColor = "black";
-      $(".header .two").style.backgroundColor = "black";
-      $(".header .three").style.backgroundColor = "black";
-    } else {
-      $(".header").style.color = "white";
-      $(".header .one").style.backgroundColor = "white";
-      $(".header .two").style.backgroundColor = "white";
-      $(".header .three").style.backgroundColor = "white";
-    }
-    const navBarItems = [...$$(".nav-bar__container__item")];
-    navBarItems.forEach((navBarItem, index) => {
-      if (index === page) {
-        navBarItem.className = "nav-bar__container__item active";
-      } else {
-        navBarItem.className = "nav-bar__container__item";
-      }
-    });
-    if (page === 1) {
-      navBarItems[1].style.backgroundColor = "black";
-    } else {
-      navBarItems[1].style.backgroundColor = "#bcbec28e";
-    }
-    replacePath();
-  }
-}
 let prevAnchorLink = "firstPage";
 function replacePath() {
   let newAnchorLink;
@@ -297,40 +260,16 @@ function replacePath() {
   }
 }
 
+function prevPage() {
+  if (page - 1 >= 0) {
+    slidingToPage(page - 1, true);
+    replacePath();
+  }
+}
+
 function nextPage() {
-  let sections = [...$$("#section")];
   if (page + 1 < numberOfPages) {
-    sections[page].removeEventListener("wheel", handleWheel);
-    page++;
-    $("#fullpage").style.transition = "0.5s";
-    $("#fullpage").style.transform = `translateY(-${
-      window.innerHeight * page
-    }px)`;
-    sections[page].addEventListener("wheel", handleWheel);
-    if (page === 1) {
-      $(".header").style.color = "black";
-      $(".header .one").style.backgroundColor = "black";
-      $(".header .two").style.backgroundColor = "black";
-      $(".header .three").style.backgroundColor = "black";
-    } else {
-      $(".header").style.color = "white";
-      $(".header .one").style.backgroundColor = "white";
-      $(".header .two").style.backgroundColor = "white";
-      $(".header .three").style.backgroundColor = "white";
-    }
-    const navBarItems = [...$$(".nav-bar__container__item")];
-    navBarItems.forEach((navBarItem, index) => {
-      if (index === page) {
-        navBarItem.className = "nav-bar__container__item active";
-      } else {
-        navBarItem.className = "nav-bar__container__item";
-      }
-    });
-    if (page === 1) {
-      navBarItems[1].style.backgroundColor = "black";
-    } else {
-      navBarItems[1].style.backgroundColor = "#bcbec28e";
-    }
+    slidingToPage(page + 1, true);
     replacePath();
   }
 }
@@ -342,6 +281,7 @@ function sectionHeightAuto() {
   });
   updateCurrentPageHeight();
 }
+
 let toggleHeader = false;
 let timeout;
 function handleHeader() {
